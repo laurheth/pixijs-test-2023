@@ -3,6 +3,7 @@
     "pixi.js": "^7.1.1"
   },
   "devDependencies": {
+    "@types/pixi.js": "^5.0.0",
     "@webpack-cli/generators": "^3.0.1",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.0",

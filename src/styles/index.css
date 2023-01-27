@@ -1,0 +1,12 @@
+body {
+    margin: 0
+}
+
+.appRoot {
+    height: 100vh;
+    width: auto;
+}
+
+.appRoot canvas {
+    display: block;
+}
