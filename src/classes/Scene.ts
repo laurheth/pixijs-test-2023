@@ -13,16 +13,11 @@ abstract class Scene {
     // The container holding the scene contents
     container: Container;
 
-    // Size of the stage, for easy access
-    size: SizeParams;
-
     // Update method, to be called via the ticker
     abstract update(delta:number): void;
 
     // Resize method, to be called when the window size is changed, and at the start.
-    setSize(size:SizeParams): void {
-        this.size = size;
-    }
+    abstract setSize(size:SizeParams): void;
 
     constructor() {
         this.container = new Container();
