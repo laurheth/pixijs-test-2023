@@ -24,19 +24,19 @@ class App {
 
         // Initialize the application object
         this.pixiApp = new Application({
-            backgroundColor: "black",
+            backgroundColor: "#556677",
             autoDensity: true
         });
 
         // Put the canvas in appRoot
         this.appRoot.append(this.pixiApp.view as HTMLCanvasElement);
+        
+        // Initialize the scenes array
+        this.scenes = [];
 
         // Detect when the window is resized, and update the renderer to accomodate.
         window.onresize = () => this.canvasResize();
         this.canvasResize();
-
-        // Initialize the scenes array
-        this.scenes = [];
 
         // Setup the FPS counter
         this.fpsText = new Text("FPS : 0", {
@@ -62,7 +62,7 @@ class App {
         } else {
             newScene.container.visible = false;
         }
-        newScene.setSize(this.pixiApp.stage);
+        newScene.setSize(this.pixiApp.renderer);
         this.pixiApp.stage.addChild(newScene.container);
     }
 
@@ -73,14 +73,14 @@ class App {
         this.pixiApp.renderer.resize(this.appRoot.clientWidth, this.appRoot.clientHeight);
 
         // Propogate the resize down
-        this.scenes.forEach(scene => scene.setSize(this.pixiApp.stage));
+        this.scenes.forEach(scene => scene.setSize(this.pixiApp.renderer));
     }
 
     // Run every timestep.
     update(delta:number): void {
         // Update the FPS counter
         this.fpsText.text = `FPS : ${this.pixiApp.ticker.FPS.toFixed(1)}`;
-        // Update the currently active scene
+        // Update the currently active scene.
         this.activeScene?.update(delta);
     }
 }
