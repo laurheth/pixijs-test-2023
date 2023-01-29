@@ -43,6 +43,7 @@ export default class TextImageScene extends Scene {
 
     constructor({updatePeriod, textures, words, fontSizeRange, color}:TextImageSceneParams) {
         super()
+        this.name = "Text Sprite Combination";
         this.duration = updatePeriod * Ticker.targetFPMS;
         this.elapsed = 0;
         this.textures = textures

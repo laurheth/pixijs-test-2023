@@ -3,7 +3,7 @@ import App from "./classes/App"
 import DeckScene from "./classes/DeckScene"
 import TextImageScene from "./classes/TextImageScene"
 import FireScene from "./classes/FireScene"
-import { Assets, Texture } from "pixi.js"
+import { Assets, Texture, Text } from "pixi.js"
 
 // Function to set everything up
 async function init() {
@@ -29,7 +29,7 @@ async function init() {
         words: ["Cat", "Meow", "Hello", "Purrfect"],
         fontSizeRange: {
             max: 60,
-            min: 10
+            min: 20
         },
         color: "black"
     }));

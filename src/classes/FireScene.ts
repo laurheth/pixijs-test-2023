@@ -1,53 +1,6 @@
 import { BLEND_MODES, ParticleContainer, Sprite, Texture, Ticker, utils } from 'pixi.js';
 import { default as Scene, SizeParams } from './Scene'
-
-interface FireParticleProperties {
-    texture: Texture;
-    expectedLifetime: number;
-}
-
-class FireParticle {
-    // Sprite for this particle
-    sprite: Sprite;
-    // Current particle velocity
-    velocity: {x: number, y:number};
-    // How long we expect this particle to exist
-    expectedLifetime: number;
-
-    // How long it has existed
-    elapsed: number;
-
-    constructor({texture, expectedLifetime}:FireParticleProperties) {
-        this.sprite = Sprite.from(texture);
-        // Start invisible to make it a bit nicer
-        this.sprite.visible = false;
-        this.sprite.x = 0;
-        this.sprite.y = 0;
-        this.velocity = {x:0, y:0};
-        this.expectedLifetime = expectedLifetime;
-    }
-
-    resetProperties(startVelocity: {x:number, y:number}) {
-        this.velocity = startVelocity;
-        this.sprite.x = 0;
-        this.sprite.y = 0;
-        this.sprite.visible = true;
-        this.elapsed = 0;
-        this.sprite.tint = 0xFFFF00;
-        this.sprite.parent.setChildIndex(this.sprite, this.sprite.parent.children.length - 1);
-    }
-
-    update(delta: number, acceleration:{x:number, y:number}) {
-        this.velocity.x += delta * acceleration.x;
-        this.velocity.y += delta * acceleration.y;
-        
-        this.sprite.x += delta * this.velocity.x;
-        this.sprite.y += delta * this.velocity.y;
-        this.elapsed += delta;
-        const fraction = Math.min(1, this.elapsed / this.expectedLifetime);
-        this.sprite.tint = utils.rgb2hex([1, 1 - fraction, 0]);
-    }
-}
+import FireParticle from './FireParticle'
 
 interface FireSceneParams {
     // Time between each particle emission, in milliseconds
@@ -87,6 +40,7 @@ export default class FireScene extends Scene {
 
     constructor({particlePeriod, texture, particleCount, upAcceleration, startVelocityScatter, randomWalkAccelerationAmount}:FireSceneParams) {
         super();
+        this.name = "Fire";
         this.spriteSize = {
             width: texture.width,
             height: texture.height

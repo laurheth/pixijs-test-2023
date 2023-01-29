@@ -44,7 +44,7 @@ export default class DeckScene extends Scene {
 
     constructor({sprite, cardCount, moveDuration, waitDuration}:DeckSceneParams) {
         super();
-        this.name = "Deck of Cards";
+        this.name = "Deck of Sprites";
         this.deckSize = cardCount;
         this.waitFrames = waitDuration * Ticker.targetFPMS;
         this.elapsed = 0;

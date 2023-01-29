@@ -1,5 +1,6 @@
 import { Application, Text } from 'pixi.js';
 import Scene from './Scene';
+import Menu from './Menu';
 
 // Main class for our application
 class App {
@@ -18,6 +19,9 @@ class App {
     // Text object to show the current Frames Per Second
     fpsText: Text;
 
+    // The in-game menu
+    menu: Menu;
+
     // Main constructor
     constructor(rootNode: HTMLElement) {
         this.appRoot = rootNode;
@@ -34,6 +38,14 @@ class App {
         // Initialize the scenes array
         this.scenes = [];
 
+        // Add the in-game menu
+        this.menu = new Menu();
+        this.pixiApp.stage.addChild(this.menu.container);
+
+        // Keep the menu on top, no exceptions.
+        this.pixiApp.stage.sortableChildren = true;
+        this.menu.container.zIndex = Infinity;
+
         // Detect when the window is resized, and update the renderer to accomodate.
         window.onresize = () => this.canvasResize();
         this.canvasResize();
@@ -41,8 +53,10 @@ class App {
         // Setup the FPS counter
         this.fpsText = new Text("FPS : 0", {
             fontSize: 30,
-            fill: "white"
+            fill: "white",
         });
+
+        this.fpsText.resolution = 1;
 
         this.pixiApp.stage.addChild(this.fpsText);
 
@@ -57,13 +71,29 @@ class App {
 
         // If there's no active scene, grab the first one we get.
         if (!this.activeScene) {
-            this.activeScene = newScene;
-            newScene.container.visible = true;
+            this.showScene(newScene);
         } else {
             newScene.container.visible = false;
+            newScene.setSize(this.pixiApp.renderer);
         }
-        newScene.setSize(this.pixiApp.renderer);
         this.pixiApp.stage.addChild(newScene.container);
+
+        // Add a menu button
+        this.menu.addMenuOption({
+            text: `Show ${newScene.name} scene`,
+            callback: ()=>this.showScene(newScene)
+        });
+        this.menu.setSize(this.pixiApp.renderer);
+    }
+
+    // Show a specified scene.
+    showScene(sceneToShow:Scene) {
+        if (this.activeScene) {
+            this.activeScene.container.visible = false;
+        }
+        this.activeScene = sceneToShow;
+        this.activeScene.setSize(this.pixiApp.renderer);
+        this.activeScene.container.visible = true;
     }
 
     // Resize the canvas/renderer to fit appRoot
@@ -74,6 +104,13 @@ class App {
 
         // Propogate the resize down
         this.scenes.forEach(scene => scene.setSize(this.pixiApp.renderer));
+
+        // Position the menu
+        this.menu.container.y = this.appRoot.clientHeight - 20;
+        this.menu.container.x = this.appRoot.clientWidth / 2;
+
+        // Resize the menu text if we need to
+        this.menu.setSize(this.pixiApp.renderer);
     }
 
     // Run every timestep.
