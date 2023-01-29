@@ -58,6 +58,9 @@ export default class Card {
             const moveVector = [this.endDeck.container.x - this.startDeck.container.x, this.endDeck.container.y - this.startDeck.container.y - this.endIndex + this.startIndex];
             this.card.x = this.startDeck.container.x + moveVector[0] * moveFraction;
             this.card.y = this.startDeck.container.y -this.startIndex + moveVector[1] * moveFraction;
+
+            // Rather than be boring and linear, lets make a bit more fun and quadratic.
+            this.card.y += 2 * (this.card.height * ((moveFraction - 0.5)**2 - 0.25));
         } else {
             this.card.x = 0;
             this.card.y = this.doneMoving ? -this.endIndex : -this.startIndex;
